@@ -1,0 +1,107 @@
+---
+title: "Tidyverse recipe: ggplot2"
+author: "Christina Valore"
+date: "5/5/2019"
+output:
+  html_document:
+    highlight: pygments
+    toc: true
+    toc_float:
+      collapsed: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+For this recipe, I decided to focus on the ggplot2 package as data visualization is highly important when translating your findings to your colleagues. Using the heart disease dataset from Kaggle, I was able to plot two variables: age and resting blood pressure using a scatterplot. I was then able to manipulate the plot by changing the size/color of the points, adding titles to the graph, and re-position the main title and legend. 
+
+## About the data
+
+This database contains 76 attributes, but all published experiments refer to using a subset of 14 of them. In particular, the Cleveland database is the only one that has been used by ML researchers to this date. The "goal" field refers to the presence of heart disease in the patient. It is integer valued from 0 (no presence) to 4.
+
+The full dataset can be found here: https://www.kaggle.com/ronitf/heart-disease-uci
+
+Variables in this dataset include:
+
+> 1. age 
+
+> 2. sex 
+
+> 3. chest pain type (4 values) 
+
+> 4. resting blood pressure 
+
+> 5. serum cholestoral in mg/dl 
+
+> 6. fasting blood sugar > 120 mg/dl
+
+> 7. resting electrocardiographic results (values 0,1,2)
+
+> 8. maximum heart rate achieved 
+
+> 9. exercise induced angina 
+
+> 10. oldpeak = ST depression induced by exercise relative to rest 
+
+> 11. the slope of the peak exercise ST segment 
+
+> 12. number of major vessels (0-3) colored by flourosopy 
+
+> 13. thal: 3 = normal; 6 = fixed defect; 7 = reversable defect
+
+## Data Visualization
+
+In this section we will start off with a simple scatterplot and continue to add change/add additional aspects in the graph to make it more complex and intuitive. 
+
+```{r}
+library(ggplot2)
+
+# load in the data 
+heart<- read.csv("https://raw.githubusercontent.com/ChristinaValore/comp-math-605/master/heart.csv", header = TRUE)
+head(heart,5)
+
+# geom_point(): create simple scatterplot
+ggplot(heart, aes(age, trestbps)) + geom_point() 
+
+# geom_point(size =1): change size of the scatterplot points
+ggplot(heart, aes(age, trestbps)) + geom_point(size=1.85) 
+
+# position="jitter": we can prevent overlapping points by adding random noise to x and y
+ggplot(heart, aes(age, trestbps)) + geom_point(position="jitter",size=1.85) 
+
+# scale_color_gradientn: add color to the points by adding in color in the ggplot aes() & also the gradient factor
+ggplot(heart, aes(age, trestbps, color=trestbps)) + geom_point(position="jitter",size=1.85) + scale_color_gradientn(colors=topo.colors(10))
+
+# each palette gives a different gradient
+ggplot(heart, aes(age, trestbps, color=trestbps)) + geom_point(position="jitter",size=1.85) + scale_color_gradientn(colors=heat.colors(10))
+
+# ggtitle: add a title to your graph
+ggplot(heart, aes(age, trestbps, color=trestbps)) + geom_point(position="jitter",size=1.85) + scale_color_gradientn(colors=heat.colors(10)) + ggtitle("Age vs. Resting blood pressure")
+
+# xlab: change the x axis title
+ggplot(heart, aes(age, trestbps, color=trestbps)) + geom_point(position="jitter",size=1.85) + scale_color_gradientn(colors=heat.colors(10)) + ggtitle("Age vs. Resting blood pressure") + xlab("Age")
+
+# ylab: change the y axis title
+ggplot(heart, aes(age, trestbps, color=trestbps)) + geom_point(position="jitter",size=1.85) + scale_color_gradientn(colors=heat.colors(10)) + ggtitle("Age vs. Resting blood pressure") + xlab("Age") + ylab("Resting blood pressure")
+
+# labs: change x, y axis and title of graph all at once
+ggplot(heart, aes(age, trestbps, color=trestbps)) + geom_point(position="jitter",size=1.85) + scale_color_gradientn(colors=heat.colors(10)) + labs(title="AGE vs. RESTING BLOOD PRESSURE", x="AGE", y="RESTING BLOOD PRESSURE") 
+
+# labs: add in color to change the legend title
+ggplot(heart, aes(age, trestbps, color=trestbps)) + geom_point(position="jitter",size=1.85) + scale_color_gradientn(colors=heat.colors(10)) + labs(title="AGE vs. RESTING BLOOD PRESSURE", x="AGE", y="RESTING BLOOD PRESSURE", color = "Resting blood pressure") 
+
+# theme: move the legend from the right to the bottom
+ggplot(heart, aes(age, trestbps, color=trestbps)) + geom_point(position="jitter",size=1.85) + scale_color_gradientn(colors=heat.colors(10)) + labs(title="AGE vs. RESTING BLOOD PRESSURE", x="AGE", y="RESTING BLOOD PRESSURE", color = "Resting blood pressure") + theme(legend.position = "bottom")
+
+# theme(plot.title): center the title
+ggplot(heart, aes(age, trestbps, color=trestbps)) + geom_point(position="jitter",size=1.85) + scale_color_gradientn(colors=heat.colors(10)) + labs(title="AGE vs. RESTING BLOOD PRESSURE", x="AGE", y="RESTING BLOOD PRESSURE", color = "Resting blood pressure") + theme(legend.position = "bottom") + theme(plot.title = element_text(hjust = 0.5))
+
+```
+
+## Conclusion
+
+ggplot2 is able to produce intuitive visuals in only a few lines of code. From a simple black and white graph, we are able to transform a basic scatterplot into one with a gradient scale using more accurate titles and placement that is more visually stimulating to the eye. 
+
