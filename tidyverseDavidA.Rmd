@@ -89,5 +89,6 @@ In this section, I am using ggplot to create a basic scatterplot as it is one of
 
 ```{r}
 ggplot(avg.rent.byzip, aes(x=Zip_Code, y=AvgRent)) + geom_point()
-ggplot(avg.rent.bystate, aes(x=avg.rent.bystate$State_Name,y=AvgRent)) + geom_point() + theme(axis.text.x = element_text(angle = 90)) + xlab("State Name") + ylab("Average Rent")
+ggplot(avg.rent.bystate, aes(x=avg.rent.bystate$State_Name,y=AvgRent)) + geom_point() + theme(axis.text.x = element_text(angle = 90)) + xlab("State Name") + ylab("Average Rent")+ ggtitle("State vs. Avg. rent")
+
 ```
